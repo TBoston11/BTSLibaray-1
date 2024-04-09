@@ -6,26 +6,26 @@ using namespace std;
 
 int main() {
 	// Testing book comparisons
-	//Book b1("Acorns","Shmoe, Joe","non-fiction", "Science Books",12345,3.5);
-	//Book b2("Birch Trees","Shmoe, Joe","non-fiction", "Science Books",34567,4.0);
-	//Book b3("Dogs Are My Best Friend","David, Alex","fiction", "Books for Children",22222,4.0);
-	// cout << (b1 < b1);
-	// cout << (b1 < b2);
-	// cout << (b1 < b3);
-	// cout << (b1 == b1);
-	// cout << (b1 == b2);
-	// cout << (b1 != b3);
-	// cout << (b1 > b1);
-	// cout << (b1 > b2);
-	// cout << (b1 > b3);
-	// cout << (b1 <= b1);
-	// cout << (b1 <= b2);
-	// cout << (b1 <= b3);
-	// cout << (b1 >= b1);
-	// cout << (b1 >= b2);
-	// cout << (b1 >= b3);
+	Book b1("Acorns", "Shmoe, Joe", 1984, "Science Books", 12345, 3.5);
+	Book b2("Birch Trees","Shmoe, Joe",2019, "Science Books",34567,4.0);
+	Book b3("Dogs Are My Best Friend","David, Alex",2006, "Books for Children",22222,4.0);
+	cout << (b1 < b1);
+	cout << (b1 < b2);
+	cout << (b1 < b3);
+	cout << (b1 == b1);
+	cout << (b1 == b2);
+    cout << (b1 != b3);
+	cout << (b1 > b1);
+	cout << (b1 > b2);
+    cout << (b1 > b3);
+	cout << (b1 <= b1);
+	cout << (b1 <= b2);
+	cout << (b1 <= b3);
+	cout << (b1 >= b1);
+	cout << (b1 >= b2);
+	cout << (b1 >= b3);
 
-	Library library("C:\\Users\\Leighanne\\Dropbox\\school\\cisc220\\BST_23F\\halloween.txt");
+	Library library("/Users/thomasboston/Desktop/BSTLibrary-1/halloween.txt");
 	library.menu();
 
 
