@@ -4,11 +4,11 @@
 using namespace std;
 
 BST::BST() {
-	
+	root = NULL;
 }
 
 BST::BST(string title, string author, int yr, string pub, long long isbn, float rate) {
-	
+	root = new BSTNode(title, author, yr, pub, isbn, rate);
 }
 
 BST::~BST() {
