@@ -17,6 +17,34 @@ BST::~BST() {
 
 void BST::insert(string title, string author, int yr, string pub, long long isbn, float rate) {
 
+        BSTNode* newNode = new BSTNode(title, author, yr, pub, isbn, rate);
+        if(root == NULL){
+            root = newNode;
+        } else {
+            BSTNode* current = root;
+            BSTNode* parent = NULL;
+            while(true){
+                parent = current;
+                if(author < current->book->author || (author == current->book->author && title < current->book->title)){
+                    current = current->left;
+                    if(current == NULL){
+                        parent->left = newNode;
+                        return;
+                    }
+                } else {
+                    current = current->right;
+                    if(current == NULL){
+                        parent->right = newNode;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    /*
     if(root == NULL){
         BSTNode* newNode = new BSTNode(title, author, yr, pub, isbn, rate);
         root = newNode;
@@ -40,7 +68,7 @@ void BST::insert(string title, string author, int yr, string pub, long long isbn
         }
     }
 }
-
+*/
 void BST::printTreePre(bool debug) {
 	if (root == NULL) {
 		cout << "Empty Tree" << endl;
