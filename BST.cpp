@@ -16,7 +16,27 @@ BST::~BST() {
 }
 
 void BST::insert(string title, string author, int yr, string pub, long long isbn, float rate) {
-	
+
+    if(root == NULL){
+        BSTNode* newNode = new BSTNode(title, author, yr, pub, isbn, rate);
+    }
+
+    if(author < root->book->author){
+        root = root->left;
+        insert(title, author, yr, pub, isbn, rate);
+    } else if(author < root->book->author){
+        root = root->right;
+        insert(title, author, yr, pub, isbn, rate);
+    } else if(author == root->book->author){
+        if(title < root->book->title){
+            root = root->left;
+            insert(title, author, yr, pub, isbn, rate);
+        } else {
+            root = root->left;
+            insert(title, author, yr, pub, isbn, rate);
+        }
+
+    }
 }
 
 BSTNode *BST::find(string title, string author) {
