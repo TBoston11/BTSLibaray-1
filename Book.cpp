@@ -38,41 +38,41 @@ void Book::printBook() {
 }
 
 bool Book::operator<(Book b2) {
-    if(b2.author == author){
-        return b2.title < title;
+    if(author == b2.author){
+        return title < b2.title;
     } else{
-        return b2.author < author;
+        return author < b2.author;
     }
 }
 
 bool Book::operator>(Book b2) {
-    if(b2.author == author){
-        return b2.title > title;
+    if(author == b2.author){
+        return title > b2.title;
     } else{
-        return b2.author > author;
+        return author > b2.author;
     }
 }
 
 bool Book::operator==(Book b2) {
-	return(b2.author==author && b2.title==title);
+    return(author == b2.author && title == b2.title);
 }
 
 bool Book::operator!=(Book b2) {
-    return(b2.author!=author || b2.title!=title);
+    return(author != b2.author || title != b2.title);
 }
 
 bool Book::operator<=(Book b2) {
-    if(b2.author == author){
-        return b2.title <= title;
+    if(author == b2.author){
+        return title <= b2.title;
     } else{
-        return b2.author <= author;
+        return author <= b2.author;
     }
 }
 
 bool Book::operator>=(Book b2) {
-    if(b2.author == author){
-        return b2.title >= title;
+    if(author == b2.author){
+        return title >= b2.title;
     } else{
-        return b2.author >= author;
+        return author >= b2.author;
     }
 }
