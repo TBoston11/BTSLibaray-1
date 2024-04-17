@@ -16,59 +16,78 @@ BST::~BST() {
 }
 
 void BST::insert(string title, string author, int yr, string pub, long long isbn, float rate) {
-//correcting
-        BSTNode* newNode = new BSTNode(title, author, yr, pub, isbn, rate);
-        if(root == NULL){
-            root = newNode;
-        } else {
-            BSTNode* current = root;
-            BSTNode* parent = NULL;
-            while(true){
-                parent = current;
-                if(author < current->book->author || (author == current->book->author && title < current->book->title)){
-                    current = current->left;
-                    if(current == NULL){
-                        parent->left = newNode;
-                        return;
-                    }
-                } else {
-                    current = current->right;
-                    if(current == NULL){
-                        parent->right = newNode;
-                        return;
-                    }
+    BSTNode* newNode = new BSTNode(title, author, yr, pub, isbn, rate);
+    if(root == NULL){
+        root = newNode;
+    }
+    else {
+        BSTNode* current = root;
+        BSTNode* parent = NULL;
+        while(true){
+            parent = current;
+            if(author < current->book->author || (author == current->book->author && title < current->book->title)){
+                current = current->left;
+                if(current == NULL){
+                    parent->left = newNode;
+                    return;
+                }
+            }
+            else {
+                current = current->right;
+                if(current == NULL){
+                    parent->right = newNode;
+                    return;
                 }
             }
         }
     }
+}
 
-
-
-    /*
-    if(root == NULL){
-        BSTNode* newNode = new BSTNode(title, author, yr, pub, isbn, rate);
-        root = newNode;
-        return;
+BSTNode *BST::find(string title, string author) {
+    if (author == root->book->author && title == root->book->title) {
+        return root;
     }
     if(author < root->book->author){
         root = root->left;
-        insert(title, author, yr, pub, isbn, rate);
+        find(title, author);
     }
     else if(author > root->book->author){
         root = root->right;
-        insert(title, author, yr, pub, isbn, rate);
+        find(title, author);
     }
-    else if(author == root->book->author){
-        if(title < root->book->title){
+    else if(author == root->book->author) {
+        if (title < root->book->title) {
             root = root->left;
-            insert(title, author, yr, pub, isbn, rate);
+            find(title, author);
         } else {
             root = root->right;
-            insert(title, author, yr, pub, isbn, rate);
+            find(title, author);
         }
     }
+    return NULL;
 }
-*/
+
+void BST::printTreeIO(bool debug) {
+    if (root == NULL) {
+        cout << "Empty Tree" << endl;
+    }
+    else {
+        cout << endl << "Printing In-Order:" << endl;
+        printTreeIO(root, debug);
+    }
+}
+
+void BST::printTreeIO(BSTNode *node, bool debug) {
+    /*
+    if (!node) {
+        return;
+    }
+    printTreeIO(node->left, debug);
+    node->printNode(node, debug);
+    printTreeIO(node->right, debug);
+    */
+}
+
 void BST::printTreePre(bool debug) {
 	if (root == NULL) {
 		cout << "Empty Tree" << endl;
