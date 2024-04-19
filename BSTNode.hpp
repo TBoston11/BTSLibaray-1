@@ -1,4 +1,4 @@
-
+//Connor Lockwood and Thomas Boston
 
 #ifndef BSTNODE_HPP_
 #define BSTNODE_HPP_

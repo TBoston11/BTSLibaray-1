@@ -1,4 +1,4 @@
-
+//Connor Lockwood and Thomas Boston
 
 #ifndef BST_HPP_
 #define BST_HPP_

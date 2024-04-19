@@ -1,3 +1,4 @@
+//Connor Lockwood and Thomas Boston
 #include "Book.hpp"
 
 #include <iostream>

@@ -1,3 +1,4 @@
+//Connor Lockwood and Thomas Boston
 #ifndef LIBRARY_HPP_
 #define LIBRARY_HPP_
 
