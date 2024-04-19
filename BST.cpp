@@ -1,3 +1,5 @@
+//Connor Lockwood and Thomas Boston
+
 #include "BST.hpp"
 #include <iostream>
 #include <cstdlib>
@@ -29,6 +31,7 @@ void BST::insert(string title, string author, int yr, string pub, long long isbn
                 current = current->left;
                 if(current == NULL){
                     parent->left = newNode;
+                    setHeight(newNode);
                     return;
                 }
             }
@@ -36,6 +39,7 @@ void BST::insert(string title, string author, int yr, string pub, long long isbn
                 current = current->right;
                 if(current == NULL){
                     parent->right = newNode;
+                    setHeight(newNode);
                     return;
                 }
             }
@@ -203,39 +207,115 @@ void BST::updateRating(string title, string author, float newRating) {
     return;
 }
 
-
 BSTNode *BST::removeNoKids(BSTNode *node) {
-    if(node->parent->left == node){
-        node->parent->left = NULL;
-    } else {
-        node->parent->right = NULL;
+    BSTNode* parent = node->parent;
+    if(parent == NULL){
+        return NULL;
     }
-    delete node;
-    return node;
+    else {
+        if (parent->left == node) {
+            parent->left = NULL;
+        }
+        else {
+            parent->right = NULL;
+        }
+        setHeight(parent);
+        return parent;
+    }
 }
 
 BSTNode *BST::removeOneKid(BSTNode *node, bool leftFlag) {
-    if(leftFlag){
-        if(node->parent->left == node){
-            node->parent->left = node->left;
-        } else {
-            node->parent->right = node->left;
-        }
-    } else {
-        if(node->parent->left == node){
-            node->parent->left = node->right;
-        } else {
-            node->parent->right = node->right;
-        }
+    BSTNode* child;
+    if (leftFlag) {
+        child = node->left;
     }
-    delete node;
-    return node;
+    else {
+        child = node->right;
+    }
+    if (node->parent == NULL) {
+        return child;
+    }
+    else {
+        if (node->parent->left == node) {
+            node->parent->left = child;
+        }
+        else {
+            node->parent->right = child;
+        }
+        if (child != NULL) {
+            child->parent = node->parent;
+        }
+        setHeight(node->parent);
+        return node->parent;
+    }
 }
 
 BSTNode *BST::remove(string title, string author) {
-	return NULL;
+    BSTNode* finder = find(title, author);
+    //No Kids
+    if (finder == NULL) {
+        return NULL;
+    }
+    if(finder->left == NULL && finder->right == NULL){
+        return removeNoKids(finder);
+    }
+    //One Kid
+    else if(finder->left != NULL && finder->right == NULL){
+        return removeOneKid(finder, true);
+    }
+    else if(finder->left == NULL && finder->right != NULL){
+        return removeOneKid(finder, false);
+    }
+    //Two Kids
+    else {
+        BSTNode *hold = finder->right;
+        while (hold->left != NULL) {
+            hold = hold->left;
+        }
+        if ((hold->parent != NULL) && (hold->parent->right != hold)) {
+            hold->parent->left = hold->right;
+            if (hold->right != NULL) {
+                hold->right->parent = hold->parent;
+            }
+            hold->right = finder->right;
+        }
+        if (finder->parent != NULL) {
+            if (finder->parent->left == finder) {
+                finder->parent->left = hold;
+            }
+            else {
+                finder->parent->right = hold;
+            }
+        }
+        else {
+            root = hold;
+        }
+        hold->parent = finder->parent;
+        hold->left = finder->left;
+        setHeight(hold);
+        return finder;
+    }
 }
 
 void BST::setHeight(BSTNode *node) {
-	
+    int height1 = 0;
+    int height2 = 0;
+    int height;
+    BSTNode* hold = node->left;
+    while (hold) {
+        height1 = height1 + 1;
+        hold = hold->left;
+    }
+    hold = node->right;
+    while(hold) {
+        height2 = height2 + 1;
+        hold = hold->right;
+    }
+    if (height1 >= height2) {
+        height = height1;
+    }
+    else {
+        height = height2;
+    }
+    node->height = 1 + height;
 }
