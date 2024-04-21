@@ -177,24 +177,28 @@ void BST::clearTree(BSTNode *node) {
 }
 
 bool BST::checkOut(string title, string author) {
-    if (find(title, author) != NULL) {
-        if (find(title, author)->book->checked_out == true) {
+    BSTNode* node = find(title, author);
+    if (node != NULL) {
+        if (node->book->checked_out == true) {
             return false;
         }
         else {
-            return find(title, author)->book->checked_out = true;
+            node->book->checked_out = true;
+            return true;
         }
     }
     return false;
 }
 
 bool BST::checkIn(string title, string author) {
-    if (find(title, author) != NULL) {
-        if (find(title, author)->book->checked_out == false) {
+    BSTNode* node = find(title, author);
+    if (node != NULL) {
+        if (node->book->checked_out == false) {
             return false;
         }
         else {
-            return find(title, author)->book->checked_out = true;
+            node->book->checked_out = false;
+            return true;
         }
     }
 	return false;

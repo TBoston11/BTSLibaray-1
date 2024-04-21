@@ -1,3 +1,3 @@
-C:/Users/clock/OneDrive - University of Delaware - o365/Sophomore Spring 2024/CISC220/BTSLibaray-1/cmake-build-debug/CMakeFiles/BST_23F.dir
-C:/Users/clock/OneDrive - University of Delaware - o365/Sophomore Spring 2024/CISC220/BTSLibaray-1/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/clock/OneDrive - University of Delaware - o365/Sophomore Spring 2024/CISC220/BTSLibaray-1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/thomasboston/Desktop/BST_24S/BTSLibaray-1/cmake-build-debug/CMakeFiles/BST_23F.dir
+/Users/thomasboston/Desktop/BST_24S/BTSLibaray-1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/thomasboston/Desktop/BST_24S/BTSLibaray-1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
