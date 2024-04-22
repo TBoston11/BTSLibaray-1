@@ -187,14 +187,15 @@ bool BST::checkIn(string title, string author) {
 
 void BST::updateRating(string title, string author, float newRating) {
     BSTNode* bookPoint = find(title, author);
-	if (find(title, author, root) != NULL) {
-        while(bookPoint->book != find(title, author)->book){
+    if (bookPoint != NULL) {
+        while(bookPoint != NULL && bookPoint->book->title == title && bookPoint->book->author == author){
             bookPoint->book->rating = newRating;
             bookPoint = bookPoint->right;
         }
     }
     return;
 }
+
 
 BSTNode *BST::removeNoKids(BSTNode *node) {
     if (node == root) {
