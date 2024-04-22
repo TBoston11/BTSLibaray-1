@@ -31,6 +31,7 @@ void BST::insert(string title, string author, int yr, string pub, long long isbn
                 current = current->left;
                 if(current == NULL){
                     parent->left = newNode;
+                    newNode->parent = parent;
                     setHeight(newNode);
                     return;
                 }
@@ -39,6 +40,7 @@ void BST::insert(string title, string author, int yr, string pub, long long isbn
                 current = current->right;
                 if(current == NULL){
                     parent->right = newNode;
+                    newNode->parent = parent;
                     setHeight(newNode);
                     return;
                 }
@@ -47,51 +49,26 @@ void BST::insert(string title, string author, int yr, string pub, long long isbn
     }
 }
 
-BSTNode *BST::find(string title, string author) {
-    BSTNode* current = root;
-    while (current != NULL) {
-        if (author == current->book->author && title == current->book->title) {
-            return current;
-        }
-        if(author < current->book->author){
-            current = current->left;
-        }
-        else if(author > current->book->author){
-            current = current->right;
-        }
-        else if(author == current->book->author) {
-            if (title < current->book->title) {
-                current = current->left;
-            } else {
-                current = current->right;
-            }
-        }
-    }
-    return NULL;
+BSTNode* BST::find(string title, string author) {
+    return find(title, author, root);
 }
 
 
 BSTNode *BST::find(string title, string author, BSTNode *start) {
-    BSTNode* current = start;
-    while (current != NULL) {
-        if (author == current->book->author && title == current->book->title) {
-            return current;
-        }
-        if(author < current->book->author){
-            current = current->left;
-        }
-        else if(author > current->book->author){
-            current = current->right;
-        }
-        else if(author == current->book->author) {
-            if (title < current->book->title) {
-                current = current->left;
-            } else {
-                current = current->right;
-            }
-        }
+    if (start == NULL) {
+        return NULL;
     }
-    return NULL;
+    int autComp = author.compare(start->book->author);
+    int titleComp = title.compare(start->book->title);
+    if (autComp == 0 && titleComp == 0) {
+        return start;
+    }
+    if (autComp < 0 || (autComp == 0 && titleComp < 0)) {
+        return find(title, author, start->left);
+    }
+    else {
+        return find(title, author, start->right);
+    }
 }
 
 void BST::printTreeIO(bool debug) {
@@ -177,40 +154,53 @@ void BST::clearTree(BSTNode *node) {
 }
 
 bool BST::checkOut(string title, string author) {
-    if (find(title, author) != NULL) {
-        if (find(title, author)->book->checked_out == true) {
+    BSTNode* hold = find(title, author, root);
+    if (hold == NULL) {
+        return false;
+    }
+    else {
+        if (hold->book->checked_out) {
             return false;
         }
         else {
-            return find(title, author)->book->checked_out = true;
+            hold->book->checked_out = true;
+            return true;
         }
     }
-    return false;
 }
 
 bool BST::checkIn(string title, string author) {
-    if (find(title, author) != NULL) {
-        if (find(title, author)->book->checked_out == false) {
+    BSTNode* hold = find(title, author, root);
+    if (hold == NULL) {
+        return false;
+    }
+    else {
+        if (!hold->book->checked_out) {
             return false;
         }
         else {
-            return find(title, author)->book->checked_out = true;
+            hold->book->checked_out = false;
+            return true;
         }
     }
-	return false;
 }
 
 void BST::updateRating(string title, string author, float newRating) {
-	if (find(title, author) != NULL) {
-        find(title, author)->book->rating = newRating;
+	if (find(title, author, root) != NULL) {
+        find(title, author, root)->book->rating = newRating;
     }
     return;
 }
 
 BSTNode *BST::removeNoKids(BSTNode *node) {
+    if (node == root) {
+        root = NULL;
+        setHeight(node);
+        return node;
+    }
     BSTNode* parent = node->parent;
     if(parent == NULL){
-        return NULL;
+        return node;
     }
     else {
         if (parent->left == node) {
@@ -220,7 +210,7 @@ BSTNode *BST::removeNoKids(BSTNode *node) {
             parent->right = NULL;
         }
         setHeight(parent);
-        return parent;
+        return node;
     }
 }
 
@@ -246,12 +236,13 @@ BSTNode *BST::removeOneKid(BSTNode *node, bool leftFlag) {
             child->parent = node->parent;
         }
         setHeight(node->parent);
-        return node->parent;
+        setHeight(child);
+        return node;
     }
 }
 
 BSTNode *BST::remove(string title, string author) {
-    BSTNode* finder = find(title, author);
+    BSTNode* finder = find(title, author, root);
     //No Kids
     if (finder == NULL) {
         return NULL;
@@ -272,14 +263,17 @@ BSTNode *BST::remove(string title, string author) {
         while (hold->left != NULL) {
             hold = hold->left;
         }
-        if ((hold->parent != NULL) && (hold->parent->right != hold)) {
+        if (hold->parent != finder) {
             hold->parent->left = hold->right;
             if (hold->right != NULL) {
                 hold->right->parent = hold->parent;
             }
             hold->right = finder->right;
         }
-        if (finder->parent != NULL) {
+        if (finder->parent == NULL) {
+            root = hold;
+        }
+        else {
             if (finder->parent->left == finder) {
                 finder->parent->left = hold;
             }
@@ -287,35 +281,40 @@ BSTNode *BST::remove(string title, string author) {
                 finder->parent->right = hold;
             }
         }
-        else {
-            root = hold;
+        if (hold->parent != NULL) {
+            hold->parent = finder->parent;
         }
-        hold->parent = finder->parent;
         hold->left = finder->left;
         setHeight(hold);
+        BSTNode* parent = hold->parent;
+        while (parent != NULL) {
+            int left = -1;
+            int right = -1;
+            if (parent->left != NULL) {
+                left = parent->left->height;
+            }
+            if (parent->right != NULL) {
+                right = parent->right->height;
+            }
+            parent->height = max(left, right) + 1;
+            parent = parent->parent;
+        }
+        finder->left = NULL;
+        finder->right = NULL;
+        finder->parent = NULL;
         return finder;
     }
 }
 
 void BST::setHeight(BSTNode *node) {
-    int height1 = 0;
-    int height2 = 0;
-    int height;
-    BSTNode* hold = node->left;
-    while (hold) {
-        height1 = height1 + 1;
-        hold = hold->left;
+    BSTNode* hold = node;
+    int val = 1;
+    while (hold != NULL) {
+        if (hold->height > val) {
+            return;
+        }
+        hold->height = val;
+        val++;
+        hold = hold->parent;
     }
-    hold = node->right;
-    while(hold) {
-        height2 = height2 + 1;
-        hold = hold->right;
-    }
-    if (height1 >= height2) {
-        height = height1;
-    }
-    else {
-        height = height2;
-    }
-    node->height = 1 + height;
 }
