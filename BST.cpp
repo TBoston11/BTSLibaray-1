@@ -188,9 +188,9 @@ bool BST::checkIn(string title, string author) {
 void BST::updateRating(string title, string author, float newRating) {
     BSTNode* bookPoint = find(title, author);
     if (bookPoint != NULL) {
-        while(bookPoint != NULL && bookPoint->book->title == title && bookPoint->book->author == author){
             bookPoint->book->rating = newRating;
-            bookPoint = bookPoint->right;
+            if(bookPoint->right != NULL && bookPoint->right->book->title == bookPoint->book->title){
+                bookPoint->right->book->rating = newRating;
         }
     }
     return;
