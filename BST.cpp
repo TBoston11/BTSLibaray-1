@@ -154,36 +154,29 @@ void BST::clearTree(BSTNode *node) {
 }
 
 bool BST::checkOut(string title, string author) {
-    BSTNode* hold = find(title, author, root);
-    if (hold == NULL) {
-        return false;
-    }
-    else {
-        if (hold->book->checked_out) {
-            return false;
-        }
-        else {
-            hold->book->checked_out = true;
+    BSTNode* node = find(title, author);
+    while (node != NULL) {
+        if (node->book->checked_out == false) {
+            node->book->checked_out = true;
             return true;
         }
+        node = find(title, author, node->right);
     }
+    return false;
 }
 
 bool BST::checkIn(string title, string author) {
-    BSTNode* hold = find(title, author, root);
-    if (hold == NULL) {
-        return false;
-    }
-    else {
-        if (!hold->book->checked_out) {
-            return false;
-        }
-        else {
-            hold->book->checked_out = false;
+    BSTNode* node = find(title, author);
+    while (node != NULL) {
+        if (node->book->checked_out == true) {
+            node->book->checked_out = false;
             return true;
         }
+        node = find(title, author, node->right);
     }
+    return false;
 }
+
 
 void BST::updateRating(string title, string author, float newRating) {
     BSTNode* bookPoint = find(title, author);
