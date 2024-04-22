@@ -189,9 +189,7 @@ void BST::updateRating(string title, string author, float newRating) {
     BSTNode* bookPoint = find(title, author);
     if (bookPoint != NULL) {
             bookPoint->book->rating = newRating;
-            if(bookPoint->right != NULL && bookPoint->right->book->title == bookPoint->book->title){
-                bookPoint->right->book->rating = newRating;
-        }
+            bookPoint = find(title, author, bookPoint);
     }
     return;
 }
