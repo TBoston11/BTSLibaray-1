@@ -20,6 +20,7 @@ public:
 																							// given information
 	BSTNode *find(string title, string author); // finds and returns the first book that matches the title and author
 												// returns null if the book does not exist
+
 	BSTNode *find(string title, string author, BSTNode* start); // finds and returnsthe first book in the tree (starting
 																// from the given subtree) that matches the title and
 																// author. Returns null if the book does not exist in
