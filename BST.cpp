@@ -189,7 +189,7 @@ void BST::updateRating(string title, string author, float newRating) {
     BSTNode* bookPoint = find(title, author);
     while(bookPoint != NULL) {
             bookPoint->book->rating = newRating;
-            bookPoint = find(title, author, bookPoint);
+            bookPoint = find(title, author, bookPoint->right);
     }
     return;
 }
