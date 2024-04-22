@@ -27,7 +27,7 @@ int main() {
 	cout << (b1 >= b2);
 	cout << (b1 >= b3);
 
-	Library library("C:\\Users\\clock\\OneDrive - University of Delaware - o365\\Sophomore Spring 2024\\CISC220\\BTSLibaray-1\\classics.txt");
+	Library library("/Users/thomasboston/Desktop/BST_24S/BTSLibaray-1/halloween.txt");
 	library.menu();
 
 
