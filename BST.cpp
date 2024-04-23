@@ -232,8 +232,7 @@ BSTNode *BST::removeOneKid(BSTNode *node, bool leftFlag) {
     }
     if ((node->parent == NULL) || (node == root)) { //If node is root
         root = child; //setting the root to child
-        child->left = root->left; //updating root's children
-        child->right = root->right;
+        child->parent = NULL; //updating root's parent
     }
     else {
         if (node->parent->left == node) { //If node is on left of parent
@@ -255,6 +254,7 @@ BSTNode *BST::remove(string title, string author) {
     if (finder == NULL) { //If node was not found
         return NULL;
     }
+
     //No Kids
     if(finder->left == NULL && finder->right == NULL){
         return removeNoKids(finder);
@@ -277,15 +277,12 @@ BSTNode *BST::remove(string title, string author) {
             if (hold->right != NULL) {
                 hold->right->parent = hold->parent;
             }
-            if (finder->right != NULL) {
-                finder->right->parent = hold;
-            }
             hold->right = finder->right;
+            finder->right->parent = hold;
         }
         if (finder->parent == NULL || finder == root) {
             root = hold;
-            hold->parent = finder->parent;
-            hold->left = finder->left;
+            hold->parent = NULL;
         }
         else {
             if (finder->parent->left == finder) {
@@ -294,11 +291,10 @@ BSTNode *BST::remove(string title, string author) {
             else {
                 finder->parent->right = hold;
             }
-        }
-        if (hold->parent != NULL) {
             hold->parent = finder->parent;
         }
         hold->left = finder->left;
+        finder->left->parent = hold;
         setHeight(root);
         finder->left = NULL;
         finder->right = NULL;
