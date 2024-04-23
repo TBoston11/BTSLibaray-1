@@ -217,6 +217,7 @@ BSTNode *BST::removeNoKids(BSTNode *node) {
         else {
             parent->right = NULL;
         }
+        setHeight(node);
         setHeight(root);
     }
     return node;
@@ -224,28 +225,30 @@ BSTNode *BST::removeNoKids(BSTNode *node) {
 
 BSTNode *BST::removeOneKid(BSTNode *node, bool leftFlag) {
     BSTNode* child;
-    if (leftFlag) {
+    if (leftFlag) { //If node is on the left
         child = node->left;
     }
-    else {
+    else { //If node is on the right
         child = node->right;
     }
-    if ((node->parent == NULL) || (node == root)) {
-        root = child;
-        child->left = root->left;
+    if ((node->parent == NULL) || (node == root)) { //If node is root
+        root = child; //setting the root to child
+        child->left = root->left; //updating root's children
         child->right = root->right;
     }
     else {
-        if (node->parent->left == node) {
+        if (node->parent->left == node) { //If node is on left of parent
             node->parent->left = child;
             child->parent = node->parent;
         }
-        else {
+        else { //If node is on right of parent
             node->parent->right = child;
             child->parent = node->parent;
         }
     }
     setHeight(root);
+    setHeight(node);
+    setHeight(child);
     return node;
 }
 
