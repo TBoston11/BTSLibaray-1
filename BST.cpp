@@ -107,7 +107,7 @@ void BST::printTreePre(bool debug) {
 }
 
 void BST::printTreePre(BSTNode *node, bool debug) {
-    if (!node) {
+    if (!node) { //If node does not exist
         return;
     }
     //Pre Order: Print, Left Right
@@ -150,6 +150,7 @@ void BST::clearTree() {
 }
 
 void BST::clearTree(BSTNode *node) {
+    //Function to clear the tree
 	if (node == NULL) { //Empty
 		return;
 	}
@@ -205,12 +206,14 @@ void BST::updateRating(string title, string author, float newRating) {
 
 
 BSTNode *BST::removeNoKids(BSTNode *node) {
-    if (node == root) {
+    //Removing a node when it has no children
+    if (node == root) { //if node we are removing is root
         root = NULL;
         return node;
     }
+
     BSTNode* parent = node->parent;
-    if(parent != NULL){
+    if(parent != NULL){ //Removing node and reassigning parents child pointer
         if (parent->left == node) {
             parent->left = NULL;
         }
@@ -268,10 +271,12 @@ BSTNode *BST::remove(string title, string author) {
     }
         //Two Kids
     else {
+        //replaces node with right child
         BSTNode *hold = finder->right;
-        while (hold->left != NULL) {
+        while (hold->left != NULL) { //Finds left node to set as new left child of new parent
             hold = hold->left;
         }
+        //If the leftmost node is not the child of the node we are removing
         if (hold->parent != finder) {
             hold->parent->left = hold->right;
             if (hold->right != NULL) {
@@ -280,11 +285,13 @@ BSTNode *BST::remove(string title, string author) {
             hold->right = finder->right;
             finder->right->parent = hold;
         }
+        //if the node we are removing is the root
         if (finder->parent == NULL || finder == root) {
             root = hold;
             hold->parent = NULL;
         }
         else {
+            //set removed nodes left child's parent to the new parent and update connections
             if (finder->parent->left == finder) {
                 finder->parent->left = hold;
             }
@@ -295,7 +302,8 @@ BSTNode *BST::remove(string title, string author) {
         }
         hold->left = finder->left;
         finder->left->parent = hold;
-        setHeight(root);
+        setHeight(root); //Update heights
+        //So no pointer errors
         finder->left = NULL;
         finder->right = NULL;
         finder->parent = NULL;
@@ -304,23 +312,25 @@ BSTNode *BST::remove(string title, string author) {
 }
 
 void BST::setHeight(BSTNode *node) {
-    node->height = 0;
-    if (node->left != NULL) {
+    //Sets the height of nodes, from the bottom up to the root, starting
+    node->height = 0; //resets height to 0
+    if (node->left != NULL) { //If node has left child, recursively call on left children
         setHeight(node->left);
     }
-    if (node->right != NULL) {
+    if (node->right != NULL) { //Recursively call on right children
         setHeight(node->right);
     }
-    if ((node->left == NULL) && (node->right == NULL)) {
+    if ((node->left == NULL) && (node->right == NULL)) { //check if node is a leaf
         BSTNode* hold = node;
         int val = 1;
-        while (hold != NULL) {
-            if (hold->height > val) {
+        while (hold != NULL) { //runs while hold is real values
+            if (hold->height > val) { //end function when heights are set correctly
                 return;
             }
             hold->height = val;
             val = val + 1;
             hold = hold->parent;
+            //previous three lines reassign height of hold node, increment val by 1, and move to hold nodes parent up the tree
         }
     }
 }
