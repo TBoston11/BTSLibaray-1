@@ -304,20 +304,23 @@ BSTNode *BST::remove(string title, string author) {
 }
 
 void BST::setHeight(BSTNode *node) {
-    if (node == NULL) {
-        return;
-    }
-
-    // Recursively update the heights of the left and right children
+    node->height = 0;
     if (node->left != NULL) {
         setHeight(node->left);
     }
     if (node->right != NULL) {
         setHeight(node->right);
     }
-
-    // Update the height of the current node
-    int leftHeight = (node->left != NULL) ? node->left->height : -1;
-    int rightHeight = (node->right != NULL) ? node->right->height : -1;
-    node->height = 1 + max(leftHeight, rightHeight);
+    if ((node->left == NULL) && (node->right == NULL)) {
+        BSTNode* hold = node;
+        int val = 1;
+        while (hold != NULL) {
+            if (hold->height > val) {
+                return;
+            }
+            hold->height = val;
+            val = val + 1;
+            hold = hold->parent;
+        }
+    }
 }
