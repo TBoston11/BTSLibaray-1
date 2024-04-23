@@ -217,7 +217,6 @@ BSTNode *BST::removeNoKids(BSTNode *node) {
         else {
             parent->right = NULL;
         }
-        setHeight(node);
         setHeight(root);
     }
     return node;
@@ -247,17 +246,16 @@ BSTNode *BST::removeOneKid(BSTNode *node, bool leftFlag) {
         }
     }
     setHeight(root);
-    setHeight(node);
-    setHeight(child);
+
     return node;
 }
 
 BSTNode *BST::remove(string title, string author) {
     BSTNode* finder = find(title, author, root);
-    //No Kids
-    if (finder == NULL) {
+    if (finder == NULL) { //If node was not found
         return NULL;
     }
+    //No Kids
     if(finder->left == NULL && finder->right == NULL){
         return removeNoKids(finder);
     }
@@ -278,6 +276,9 @@ BSTNode *BST::remove(string title, string author) {
             hold->parent->left = hold->right;
             if (hold->right != NULL) {
                 hold->right->parent = hold->parent;
+            }
+            if (finder->right != NULL) {
+                finder->right->parent = hold;
             }
             hold->right = finder->right;
         }
